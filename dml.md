@@ -13,3 +13,16 @@ ShohinInsテーブルにデータを追加する例
 ```sql
 INSERT INTO ShohinIns (shohin_id, shohin_mei, shohin_bunrui, hanbai_tanka, shiire_tanka, torokubi) VALUES ('0001', 'Tシャツ', '衣服', 1000, 500, '2009-09-29');
 ```
+
+### デフォルト値の設定
+デフォルト値を指定する場合には次の2つの方法がある。
+1. 明示的なデフォルト値の設定
+```sql
+INSERT INTO ShohinIns (shohin_id, shohin_mei, shohin_bunrui, hanbai_tanka, shiire_tanka, torokubi) VALUES ('0001', 'Tシャツ', '衣服', DEFAULT, 500, '2009-09-29');
+```
+
+2. 暗黙的なデフォルト値の設定(列リストにも値リストにも記述しない)
+```sql
+INSERT INTO ShohinIns (shohin_id, shohin_mei, shohin_bunrui, shiire_tanka, torokubi) VALUES ('0001', 'Tシャツ', '衣服', 500, '2009-09-29');
+```
+

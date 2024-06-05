@@ -83,6 +83,9 @@ NOT NULL制約とUNIQUE制約の組み合わせ。内部的にはPRIMARY KEYの�
 #### 外部キー制約
 カラムに格納される値が，他のテーブルの値を参照するときに外部キー制約を記述する。例としてshohin_bunruiカラムが，productsテーブルのproduct_bunruiカラムを参照する場合には，shohin_bunruiカラムの制約に`REFERENCES products(product_bunrui)`と記述する。
 
+#### DEFAULT制約
+カラムに格納される値がINSERT文で指定されていないときに，代入する値を記述する。例えばhanbai_tankaのデフォルトとして0を代入する場合には，hanbai_tankaカラムの制約に`DEFAULT 0`と記述する。
+
 ## テーブルの一覧の確認
 ```sql
 \dt;
