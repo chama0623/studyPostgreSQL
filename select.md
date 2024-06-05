@@ -3,6 +3,18 @@
 ここでは，DML文の1つであるSELECT文について説明する。
 SELECT文はSELECT句とFROM句の2つの句から構成される。SELECT句では取得する列を指定する。FROM句ではレコードを取得するテーブルを指定する。
 
+## SELECT文の評価手順
+- FROM句
+- ON句
+- JOIN句
+- WHERE句
+- GROUP BY句
+- HAVING句
+- SELECT句
+- DISTINCT句
+- ORDER BY句
+- LIMIT句
+
 ## すべてのデータを取得する
 
 カラムの表示される順番は，テーブル定義で記述した順番になる。
