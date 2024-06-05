@@ -15,6 +15,8 @@
 
 - [ビュー・サブクエリ](https://github.com/chama0623/studyPostgreSQL/blob/master/view.md)
 
-- [関数・述語・CASE式](https://github.com/chama0623/studyPostgreSQL/blob/master/function.md)
+- [関数](https://github.com/chama0623/studyPostgreSQL/blob/master/function.md)
+
+- [述語・CASE式](https://github.com/chama0623/studyPostgreSQL/blob/master/predicate.md)
 
 - [テーブルの集合演算・結合](https://github.com/chama0623/studyPostgreSQL/blob/master/merge.md)
