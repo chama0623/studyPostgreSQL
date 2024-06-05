@@ -81,7 +81,9 @@ NOT NULL制約とUNIQUE制約の組み合わせ。内部的にはPRIMARY KEYの�
 場合には，テーブル制約に`CHECK(hanbai_tanka > shiire_tanka)`と記述する。
 
 #### 外部キー制約
-カラムに格納される値が，他のテーブルの値を参照するときに外部キー制約を記述する。例としてshohin_bunruiカラムが，productsテーブルのproduct_bunruiカラムを参照する場合には，shohin_bunruiカラムの制約に`REFERENCES products(product_bunrui)`と記述する。  
+外部キー制約のドキュメント : https://www.postgresql.jp/document/16/html/ddl-constraints.html#DDL-CONSTRAINTS-FK
+
+カラムに格納される値が，他のテーブルの値を参照するときに外部キー制約を記述する。例としてshohin_bunruiカラムが，productsテーブルのproduct_bunruiカラムを参照する場合には，shohin_bunruiカラムの制約に`REFERENCES products(product_bunrui)`と記述する。  なお，参照する列は省略できる。参照する列を省略した場合には指定したテーブルの主キーが外部キーに設定される。  
 また外部キー制約はテーブル制約にまとめて記述することもできる。t1テーブルにおいてカラムa，cがother_tableテーブルのカラムc1，c2を参照する例を次に示す。
 ```sql
 CREATE TABLE t1 (
@@ -108,6 +110,16 @@ CREATE TABLE child (
 - `NO ACTION` : デフォルトの設定で，RESTRICTと同様の機能をもつ。ただし，NO ACTIONではトランザクション中に制約の検査を後回しにできる。
 - `SET NULL` : 被参照列が削除されたとき，参照列にはNULLを格納する。
 - `SET DEFAULT` : 被参照列が削除されたとき，参照列にはDEFALUT値を格納する。
+
+product_noに対して，UPDATE文はCASCADE，DELETE文はRESTRICTで実行し，order_idに対してDELETE文をCASCADEで実行するテーブル定義の例
+```sql
+CREATE TABLE order_items (
+    product_no integer REFERENCES products ON UPDATE CASCADE ON DELETE RESTRICT,
+    order_id integer REFERENCES orders ON DELETE CASCADE,
+    quantity integer,
+    PRIMARY KEY (product_no, order_id)
+);
+```
 
 #### DEFAULT制約
 カラムに格納される値がINSERT文で指定されていないときに，代入する値を記述する。例えばhanbai_tankaのデフォルトとして0を代入する場合には，hanbai_tankaカラムの制約に`DEFAULT 0`と記述する。
