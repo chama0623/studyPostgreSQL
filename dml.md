@@ -26,3 +26,28 @@ INSERT INTO ShohinIns (shohin_id, shohin_mei, shohin_bunrui, hanbai_tanka, shiir
 INSERT INTO ShohinIns (shohin_id, shohin_mei, shohin_bunrui, shiire_tanka, torokubi) VALUES ('0001', 'Tシャツ', '衣服', 500, '2009-09-29');
 ```
 
+### 他のテーブルから値をコピーする
+```sql
+INSERT INTO コピー先テーブル (列1, 列2, ...)
+SELECT (列1, 列2, ...)
+FROM コピー元テーブル;
+```
+
+## DELETE文
+テーブルの中身を空にする。
+```sql
+DELETE FROM テーブル名;
+```
+
+条件に合致するレコードを削除する。
+```sql
+DELETE FROM テーブル名
+WHERE 条件; 
+```
+
+## UPDATE文
+```sql
+UPDATE テーブル名
+SET 列名 = 式;
+WHERE 条件;
+```
