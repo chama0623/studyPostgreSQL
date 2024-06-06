@@ -86,7 +86,7 @@ WHERE句で条件判定を行うときは次に示す比較演算子が使用で
 ```
 
 
-## NULL判定・非NULL判定
+## NULL判定・非NULL判定(IS NULL述語)
 shohin_tankaがNULLのレコードを取得する。
 ```sql
 SELECT shohin_mei, shohin_tanka
