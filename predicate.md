@@ -89,3 +89,34 @@ EXISTS述語で記述したクエリの動作の手順は次のとおりであ�
 3. EXISTS述語は，相関サブクエリの実行結果で得られたレコードが1つ以上あればTRUE，それ以外のときFALSEを返す。
 4. メインクエリのWHERE句が実行される。TRUEのときはそのレコードのshohin_mei，hanbai_tankaが表示される。
 5. 1に戻って，メインクエリから別のレコードを1つ選択し2~5の手順を実行する。
+
+### CASE式
+`CASE式` : 場合分けを記述する場合に用いる関数。CASE式には単純CASE式と検索CASE式の二種類があるが，ここでは検索CASE式を扱う。
+
+CASE式は次に示す手順で実行される。
+1. 評価式1が評価される。TRUEのとき式1が戻される。
+2. 評価式2が評価される。TRUEのとき式2が戻される。  
+...  
+3. どの評価式もFALSEであれば，ELSEの評価式を実行する。
+
+```sql
+CASE WHEN 評価式1 THEN 式1
+     WHEN 評価式2 THEN 式2
+     ...
+     ELSE 式
+END
+```
+
+shohin_bunruiごとにA，B，Cのラベルをつけて「A:衣服」のように表示する例
+```sql
+SELECT shohin_mei,
+        CASE WHEN shohin_bunrui = '衣服'
+            THEN 'A:' || shohin_bunrui
+            WHEN shohin_bunrui = '事務用品'
+            THEN 'B:' || shohin_bunrui
+            WHEN shohin_bunrui = 'キッチン用品'
+            THEN 'C:' || shohin_bunrui
+            ELSE NULL
+        END AS abc_shohin_bunrui
+FROM Shohin;
+```
