@@ -63,3 +63,72 @@ SELECT shohin_id, shohin_mei, hanbai_tanka,
 AVG (hanbai_tanka) OVER (ORDER BY shohin_id ROWS 2 PRECEDING) AS moving_avg
 FROM Shohin;
 ```
+
+## GROUPING演算子
+`GROUPING演算子` : グループごとに合計や小計を求めるときに使用する演算子。GROUPING演算子には`ROLLUP`，`CUBE`，`GROUPING SETS`の3種類がある。
+
+`ROLLUP` : グルーピングに加えて合計行を求める演算子。合計行は超集合行と呼ばれ，超集合行の集約キーはデフォルトでNULLが使用される。
+
+shohin_bunruiごとの合計と，ROLLUPで全体の合計を求める例
+```sql
+SELECT shohin_bunrui, SUM(hanbai_tanka) AS sum_tanka
+FROM Shohin
+GROUP BY ROLLUP(shohin_bunrui);
+```
+
+```
+ shohin_bunrui | sum_tanka 
+---------------+-----------
+               |     16780
+ キッチン用品  |     11180
+ 衣服          |      5000
+ 事務用品      |       600
+```
+
+shohin_bunruiごとにグルーピングしたhanbai_tankaの合計を，tourokubiごとのグループの小計と全体の合計で表示する例
+```sql
+SELECT shohin_bunrui, tourokubi, SUM(hanbai_tanka) AS sum_tanka
+FROM Shohin
+GROUP BY ROLLUP(shohin_bunrui, tourokubi);
+```
+
+超集合行の集約キーはNULLになってしまうので，元々のデータにより生じたNULLと区別がつかないという問題がある。そこで次のようなGROUPING関数でこれらを区別できる。値が1のときは超集合行によるNULL, 0のときはそれ以外で生じたNULLである。
+```sql
+SELECT GROUPING(shohin_bunrui) AS shohin_bunrui, 
+GROUPING(tourokubi) AS tourokubi, 
+SUM(hanbai_tanka) AS sum_tanka
+FROM Shohin
+GROUP BY ROLLUP(shohin_bunrui, tourokubi);
+```
+
+## CUBE
+
+`CUBE` : GROUP BYで指定されたキーについて，すべての可能な組み合わせで集計を行うときに用いる。
+
+```sql
+SELECT CASE WHEN GROUPING(shohin_bunrui) = 1
+            THEN '商品分類 合計'
+            ELSE shohin_bunrui END AS shohin_bunrui,
+       CASE WHEN GROUPING(tourokubi) = 1
+            THEN '登録日 合計'
+            ELSE CAST(tourokubi AS VARCHAR(16)) END AS tourokubi,
+       SUM(hanbai_tanka) AS sum_tanka
+FROM Shohin
+GROUP BY CUBE(shohin_bunrui, tourokubi);
+```
+
+## GROUPING SETS
+
+`GROUPING SETS` : ROLLUPやCUBEで求めた結果の一部分のみが欲しいときに用いる。
+
+```sql
+SELECT CASE WHEN GROUPING(shohin_bunrui) = 1
+            THEN '商品分類 合計'
+            ELSE shohin_bunrui END AS shohin_bunrui,
+       CASE WHEN GROUPING(tourokubi) = 1
+            THEN '登録日 合計'
+            ELSE CAST(tourokubi AS VARCHAR(16)) END AS tourokubi,
+       SUM(hanbai_tanka) AS sum_tanka
+FROM Shohin
+GROUP BY GROUPING SETS(shohin_bunrui, tourokubi);
+```
